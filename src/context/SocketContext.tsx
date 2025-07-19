@@ -37,6 +37,8 @@ export function SocketProvider({ children }: SocketProviderProps) {
 
     // Create socket connection
     const newSocket = io(process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001', {
+    }
+    )
     const newSocket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001', {
       auth: {
         userId: currentUser.id,
