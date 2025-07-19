@@ -55,6 +55,11 @@ interface AppContextType {
   // Settings
   updatePreferences: (preferences: Partial<UserPreferences>) => void;
   updateCredits: (amount: number) => void;
+  
+  // Real-time message functions
+  addMessage: (message: Message) => void;
+  addRoomMessage: (message: Message) => void;
+  updateUserOnlineStatus: (userId: string, isOnline: boolean, lastSeen?: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -561,6 +566,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!currentUser) return;
     setCurrentUser(prev => prev ? { ...prev, credits: Math.max(0, prev.credits + amount) } : null);
   };
+  
+  // Real-time message functions
+  const addMessage = (message: Message) => {
+    setMessages(prev => [...prev, message]);
+  };
+  
+  const addRoomMessage = (message: Message) => {
+    setMessages(prev => [...prev, message]);
+  };
+  
+  const updateUserOnlineStatus = (userId: string, isOnline: boolean, lastSeen?: string) => {
+    // Update user online status in the users array
+    // This would typically update the database in a real implementation
+    console.log(`User ${userId} is now ${isOnline ? 'online' : 'offline'}${lastSeen ? ` (last seen: ${lastSeen})` : ''}`);
+  };
 
   const value: AppContextType = {
     currentUser,
@@ -600,6 +620,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     markAllNotificationsAsRead,
     updatePreferences,
     updateCredits,
+    addMessage,
+    addRoomMessage,
+    updateUserOnlineStatus,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

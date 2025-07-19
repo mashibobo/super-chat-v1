@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
+import { SocketProvider } from './context/SocketContext';
 import Header from './components/Layout/Header';
 import BottomNavigation from './components/Layout/BottomNavigation';
 import PrivateChat from './components/Chat/PrivateChat';
@@ -8,6 +9,8 @@ import Confessions from './components/Confessions/Confessions';
 import Profile from './components/Profile/Profile';
 import AuthModal from './components/Auth/AuthModal';
 import SettingsModal from './components/Profile/SettingsModal';
+import ConnectionStatus from './components/Common/ConnectionStatus';
+import { useRealTimeMessages } from './hooks/useRealTimeMessages';
 
 function AppContent() {
   const { currentUser, userPreferences } = useApp();
@@ -15,6 +18,9 @@ function AppContent() {
   const [showAuth, setShowAuth] = useState(!currentUser);
   const [showProfile, setShowProfile] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  
+  // Initialize real-time messaging
+  useRealTimeMessages();
 
   if (!currentUser) {
     return <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} />;
@@ -46,6 +52,7 @@ function AppContent() {
     <div className={`h-screen flex flex-col ${
       userPreferences.theme.isDark ? 'bg-gray-900' : 'bg-gray-50'
     } transition-colors duration-200`}>
+      <ConnectionStatus />
       <Header 
         onProfileClick={() => setShowProfile(!showProfile)}
         onSettingsClick={() => setShowSettings(true)}
@@ -69,7 +76,9 @@ function AppContent() {
 function App() {
   return (
     <AppProvider>
-      <AppContent />
+      <SocketProvider>
+        <AppContent />
+      </SocketProvider>
     </AppProvider>
   );
 }

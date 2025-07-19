@@ -13,13 +13,17 @@ export interface User {
 export interface Message {
   id: string;
   senderId: string;
+  senderUsername?: string;
   receiverId?: string;
   roomId?: string;
+  roomName?: string;
   content: string;
   type: 'text' | 'image';
   timestamp: string;
   isRead: boolean;
   imageUrl?: string;
+  deliveredAt?: string;
+  readAt?: string;
 }
 
 export interface ChatRoom {
