@@ -10,7 +10,7 @@ import Profile from './components/Profile/Profile';
 import AuthModal from './components/Auth/AuthModal';
 import SettingsModal from './components/Profile/SettingsModal';
 import ConnectionStatus from './components/Common/ConnectionStatus';
-import { useRealTimeMessages } from './hooks/useRealTimeMessages';
+import { useSupabaseRealtime } from './hooks/useSupabaseRealtime';
 
 function AppContent() {
   const { currentUser, userPreferences } = useApp();
@@ -20,7 +20,7 @@ function AppContent() {
   const [showSettings, setShowSettings] = useState(false);
   
   // Initialize real-time messaging
-  useRealTimeMessages();
+  useSupabaseRealtime();
 
   if (!currentUser) {
     return <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} />;
